@@ -2,6 +2,7 @@ package com.luizjacomn.moneger.api.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,7 +45,8 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{id}")
-	public Categoria buscarPorId(@PathVariable Long id) {
-		return repository.getOne(id);
+	public ResponseEntity<Categoria> buscarPorId(@PathVariable Long id) {
+		Optional<Categoria> optional = repository.findById(id);
+		return optional.isPresent() ? ResponseEntity.ok(optional.get()) : ResponseEntity.notFound().build();
 	}
 }
