@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,14 +54,27 @@ public class MonegerApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex,
 			WebRequest request) {
-
+		
 		String userMessage = messageSource.getMessage("recurso.nao-encontrado", null, LOCALE);
-
+		
 		String developerMessage = ex.toString();
+		
+		List<Error> errors = Arrays.asList(new Error(userMessage, developerMessage));
+		
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({ DataIntegrityViolationException.class })
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
+			WebRequest request) {
+
+		String userMessage = messageSource.getMessage("recurso.operacao-nao-permitida", null, LOCALE);
+
+		String developerMessage = ExceptionUtils.getRootCauseMessage(ex);
 
 		List<Error> errors = Arrays.asList(new Error(userMessage, developerMessage));
 
-		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
 	private List<Error> criarListaDeErros(BindingResult bindingResult) {
