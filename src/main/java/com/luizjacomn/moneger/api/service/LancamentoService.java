@@ -1,6 +1,5 @@
 package com.luizjacomn.moneger.api.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.luizjacomn.moneger.api.event.RecursoCriadoEvent;
@@ -17,6 +18,7 @@ import com.luizjacomn.moneger.api.model.Lancamento;
 import com.luizjacomn.moneger.api.model.Pessoa;
 import com.luizjacomn.moneger.api.repository.LancamentoRepository;
 import com.luizjacomn.moneger.api.repository.PessoaRepository;
+import com.luizjacomn.moneger.api.repository.filter.LancamentoFilter;
 
 @Service
 public class LancamentoService {
@@ -30,8 +32,8 @@ public class LancamentoService {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
-	public List<Lancamento> buscarTodos() {
-		return repository.findAll();
+	public Page<Lancamento> filtrar(LancamentoFilter filter, Pageable pageable) {
+		return repository.filtrar(filter, pageable);
 	}
 	
 	public Optional<Lancamento> buscarPorId(Long id) {
