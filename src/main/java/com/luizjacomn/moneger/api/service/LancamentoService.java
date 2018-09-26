@@ -37,7 +37,7 @@ public class LancamentoService {
 	}
 	
 	public Optional<Lancamento> buscarPorId(Long id) {
-		Optional<Lancamento> optional = repository.findById(id);
+		Optional<Lancamento> optional = Optional.of(repository.findOne(id));
 		if (!optional.isPresent())
 			throw new EmptyResultDataAccessException(1);
 		else
@@ -45,7 +45,7 @@ public class LancamentoService {
 	}
 	
 	public Lancamento salvar(Lancamento lancamento, HttpServletResponse response) {
-		Optional<Pessoa> pessoa = pessoaRepository.findById(lancamento.getPessoa().getId());
+		Optional<Pessoa> pessoa = Optional.of(pessoaRepository.findOne(lancamento.getPessoa().getId()));
 		
 		if(!pessoa.isPresent() || pessoa.get().isInativo())
 			throw new PessoaInexistenteOuInativaException();
@@ -63,6 +63,6 @@ public class LancamentoService {
 	}
 	
 	public void remover(Long id) {
-		repository.deleteById(id);
+		repository.delete(id);
 	}
 }

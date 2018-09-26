@@ -1,7 +1,6 @@
 package com.luizjacomn.moneger.api.repository.lancamento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -19,9 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-import com.jayway.jsonpath.Criteria;
 import com.luizjacomn.moneger.api.model.Lancamento;
-import com.luizjacomn.moneger.api.model.Lancamento_;
 import com.luizjacomn.moneger.api.repository.filter.LancamentoFilter;
 
 public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
@@ -52,15 +48,15 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 
 		if (!StringUtils.isEmpty(filter.getDescricao()))
 			predicates.add(
-					builder.like(builder.lower(root.get(Lancamento_.descricao)), "%" + filter.getDescricao() + "%"));
+					builder.like(builder.lower(root.get("descricao")), "%" + filter.getDescricao() + "%"));
 
 		if (Objects.nonNull(filter.getDataVencimentoDe()))
 			predicates.add(
-					builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), filter.getDataVencimentoDe()));
+					builder.greaterThanOrEqualTo(root.get("dataVencimento"), filter.getDataVencimentoDe()));
 
 		if (Objects.nonNull(filter.getDataVencimentoAte()))
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), filter.getDataVencimentoAte()));
+					builder.lessThanOrEqualTo(root.get("dataVencimento"), filter.getDataVencimentoAte()));
 
 		return predicates.stream().toArray(Predicate[]::new);
 	}

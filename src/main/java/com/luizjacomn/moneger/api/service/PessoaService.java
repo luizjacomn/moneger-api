@@ -29,7 +29,7 @@ public class PessoaService {
 	}
 
 	public Optional<Pessoa> buscarPorId(Long id) {
-		Optional<Pessoa> optional = repository.findById(id);
+		Optional<Pessoa> optional = Optional.of(repository.findOne(id));
 		if (!optional.isPresent())
 			throw new EmptyResultDataAccessException(1);
 		else
@@ -56,6 +56,6 @@ public class PessoaService {
 	}
 
 	public void remover(Long id) {
-		repository.deleteById(id);
+		repository.delete(id);
 	}
 }

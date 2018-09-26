@@ -29,7 +29,7 @@ public class CategoriaService {
 	}
 
 	public Optional<Categoria> buscarPorId(Long id) {
-		Optional<Categoria> optional = repository.findById(id);
+		Optional<Categoria> optional = Optional.of(repository.findOne(id));
 		if (!optional.isPresent())
 			throw new EmptyResultDataAccessException(1);
 		else
@@ -50,6 +50,6 @@ public class CategoriaService {
 	}
 
 	public void remover(Long id) {
-		repository.deleteById(id);
+		repository.delete(id);
 	}
 }

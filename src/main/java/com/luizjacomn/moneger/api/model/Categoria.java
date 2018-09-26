@@ -5,14 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "categoria")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria {
 	
 	@Id

@@ -13,15 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.luizjacomn.moneger.api.model.constant.TipoLancamento;
 
 @Entity
 @Table(name = "lancamento")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Lancamento {
 
 	@Id
